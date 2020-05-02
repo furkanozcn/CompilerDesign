@@ -5,6 +5,8 @@
  */
 package compilerdesign;
 
+import java.util.StringTokenizer;
+
 /**
  *
  * @author fozca
@@ -16,6 +18,10 @@ public class CompilerDesign {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+         StringTokenizer st = new StringTokenizer("my name is khan"," ");  
+         while (st.hasMoreTokens()) {  
+         System.out.println(st.nextToken());  
+     }  
     }
     
 }
