@@ -17,7 +17,7 @@ public class Operations {
     public Operations() {
         
     }
-     public int hesapla(String x){
+     public void hesapla(String x){
          String sayilar[]=x.split("[0-9]+");
          String islemler[]=x.split("[+-/*]");
          int sayi = Integer.parseInt(islemler[0]);
@@ -39,12 +39,12 @@ public class Operations {
                      break;
              }
     }
-        return sayi;
+        yaz(sayi);
      }
      public String Eger(String x,String y){
          boolean deger=Boolean.parseBoolean(x);
          if(deger){
-             return y;
+             System.out.println("test");
          }
         return null; 
      }
@@ -52,7 +52,7 @@ public class Operations {
         PrintStream out = new PrintStream(System.out);
         out.println(x);
 }
-     public void yaz(String x){
+     public void yazdir(String x){
         PrintStream out = new PrintStream(System.out);
         out.println(x);
 }

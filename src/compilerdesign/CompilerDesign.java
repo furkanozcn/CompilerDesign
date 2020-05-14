@@ -6,9 +6,11 @@
 package compilerdesign;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.*; 
+import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  *
@@ -21,13 +23,17 @@ public class CompilerDesign {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        BufferedReader br;
-        try {       
-            br = new BufferedReader(new FileReader("test.txt"));
-            Tokenizer tokenizer=new Tokenizer(br.readLine());
-            while(tokenizer.hasNextToken()){
-                System.out.println(tokenizer.nextToken().getToken());   
-            }    
+
+        BufferedReader input;
+        try {
+            input = new BufferedReader(new FileReader("test.txt"));
+            String satir;
+            while ((satir = input.readLine()) != null) {
+                Tokenizer tokenizer = new Tokenizer(satir);
+                while (tokenizer.hasNextToken()) {
+                    tokenizer.nextToken().getToken();
+                }
+            }
         } catch (IOException ex) {
             System.out.println("Dosya Bulunamadı..!");
         }
