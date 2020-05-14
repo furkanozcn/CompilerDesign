@@ -26,4 +26,5 @@ public class Token {
     public TokenType tokenType() {
         return tokenType;
     }
+   
 }

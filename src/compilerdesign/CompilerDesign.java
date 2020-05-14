@@ -8,6 +8,7 @@ package compilerdesign;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.*; 
 
 /**
  *
@@ -21,19 +22,14 @@ public class CompilerDesign {
     public static void main(String[] args) {
         // TODO code application logic here
         BufferedReader br;
-        String code="ac";
-        Tokenizer tokenizer=new Tokenizer(code);
-        
-        try {
+        try {       
             br = new BufferedReader(new FileReader("test.txt"));
+            Tokenizer tokenizer=new Tokenizer(br.readLine());
             while(tokenizer.hasNextToken()){
-                System.out.println(tokenizer.nextToken().getToken());
-            }
-            
+                System.out.println(tokenizer.nextToken().getToken());   
+            }    
         } catch (IOException ex) {
             System.out.println("Dosya Bulunamadı..!");
         }
-
     }
-
 }

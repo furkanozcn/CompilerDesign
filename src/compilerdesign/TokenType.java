@@ -14,5 +14,6 @@ public enum TokenType { //Token tipleri
     TOKEN,
     IDENTIFIER,
     INTEGER_LITERAL,
-    STRING_LITERAL
+    STRING_LITERAL,
+    KEYWORDS
 }

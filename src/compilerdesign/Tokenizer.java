@@ -5,6 +5,7 @@
  */
 package compilerdesign;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,18 +20,23 @@ public class Tokenizer {
     private String str;
     private Token lastToken;
     private boolean pushBack;
-    String[] keywords = {"boolean", "break", "catch", "char", "continue", "do", "double", "else", "float", "for", "if", "int", "String", "while", "true", "false", "+", "-", "*", "/", "%", "(", ")", "{", "}", "[", "]", ";", ",", ".", "&&", "||", "=="};
+    private Operations operation = new Operations();;
 
     public Tokenizer(String str) {
         this.tokenList = new ArrayList<TokenData>();
         this.str = str;
-
-    //    tokenList.add(new TokenData(Pattern.compile("^((-)?[0-9]+)"), TokenType.INTEGER_LITERAL));
-        tokenList.add(new TokenData(Pattern.compile("[a-c]"), TokenType.STRING_LITERAL));
+        tokenList.add(new TokenData(Pattern.compile("^([a-zA-Z][a-zA-z0-9]*)^"),TokenType.IDENTIFIER));
+        tokenList.add(new TokenData(Pattern.compile("yaz\\(\"(\\S+)\"\\);"), TokenType.STRING_LITERAL));
+        tokenList.add(new TokenData(Pattern.compile("yaz\\((\\S+)\\);"), TokenType.INTEGER_LITERAL));
+        tokenList.add(new TokenData(Pattern.compile("yaz\\(('\\S+')\\);"), TokenType.KEYWORDS));
+        for (String t:new String[]{"Eğer\\ \\((\\S+)\\).{."}) {
+            tokenList.add(new TokenData(Pattern.compile(t), TokenType.TOKEN));
+        }
     }
 
     public Token nextToken() {
         str = str.trim();
+        
         if (pushBack) {
             pushBack = false;
             return lastToken;
@@ -39,18 +45,26 @@ public class Tokenizer {
             return (lastToken = new Token("", TokenType.EMPTY));
         }
         for (TokenData data : tokenList) {
-            Matcher matcher = data.getPattern().matcher(str);
+             Matcher matcher = data.getPattern().matcher(str); 
             if (matcher.find()) {
                 String token = matcher.group().trim();
-                str = matcher.replaceFirst("");
-                if (data.getType() == TokenType.STRING_LITERAL) {
-                    return (lastToken = new Token(token, TokenType.STRING_LITERAL));
-                } else {
-                    return (lastToken = new Token(token, data.getType()));
+                str = matcher.replaceFirst(""); 
+                switch (data.getType()) {
+                    case INTEGER_LITERAL:
+                        int deger=operation.hesapla(matcher.group(1));
+                        return (lastToken = new Token(String.valueOf(deger), TokenType.INTEGER_LITERAL));
+                    case STRING_LITERAL:           
+                        return (lastToken = new Token(matcher.group(1), TokenType.STRING_LITERAL));
+                    case TOKEN:
+                        System.out.println(matcher.group(1));
+                       // operation.Tamsayi(matcher.group(1));
+                        return (lastToken = new Token(matcher.group(), TokenType.TOKEN));
+                    default:
+                        return (lastToken = new Token(token, data.getType()));
                 }
             }
         }
-        throw new IllegalStateException("Error"+str);
+        return null;
     }
 
     public boolean hasNextToken() {
